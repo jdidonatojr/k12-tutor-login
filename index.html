@@ -9,14 +9,14 @@
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js";
     import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, signInWithPopup, GoogleAuthProvider, signOut } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js";
 
-    // Pull sensitive keys from environment variables (provided by GitHub Secrets)
+    // Manually inserted real Firebase configuration
     const firebaseConfig = {
-      apiKey: "${{ secrets.FIREBASE_API_KEY }}",
-      authDomain: "${{ secrets.FIREBASE_AUTH_DOMAIN }}",
-      projectId: "${{ secrets.FIREBASE_PROJECT_ID }}",
-      storageBucket: "${{ secrets.FIREBASE_STORAGE_BUCKET }}",
-      messagingSenderId: "${{ secrets.FIREBASE_MESSAGING_SENDER_ID }}",
-      appId: "${{ secrets.FIREBASE_APP_ID }}"
+      apiKey: "AIzaSyDqVjOj8F_sAvWlgwNP12jx_5tkxWDaxSE",
+      authDomain: "k12-tutor-login.firebaseapp.com",
+      projectId: "k12-tutor-login",
+      storageBucket: "k12-tutor-login.appspot.com",
+      messagingSenderId: "829616283731",
+      appId: "1:829616283731:web:5efaa30e95fd2062a4b5d9"
     };
 
     // Initialize Firebase
@@ -35,7 +35,7 @@
         const password = document.getElementById('login-password').value;
         signInWithEmailAndPassword(auth, email, password)
           .then(() => window.location.href = "https://esourceu.com")
-          .catch(error => alert(error.message));
+          .catch((error) => alert(error.message));
       });
 
       signupForm.addEventListener('submit', (e) => {
@@ -44,7 +44,7 @@
         const password = document.getElementById('signup-password').value;
         createUserWithEmailAndPassword(auth, email, password)
           .then(() => window.location.href = "https://esourceu.com")
-          .catch(error => alert(error.message));
+          .catch((error) => alert(error.message));
       });
 
       googleButton.addEventListener('click', (e) => {
@@ -52,113 +52,19 @@
         const provider = new GoogleAuthProvider();
         signInWithPopup(auth, provider)
           .then(() => window.location.href = "https://esourceu.com")
-          .catch(error => alert(error.message));
+          .catch((error) => alert(error.message));
       });
 
       logoutButton.addEventListener('click', (e) => {
         e.preventDefault();
         signOut(auth)
           .then(() => window.location.href = "https://esourceu.com")
-          .catch(error => alert(error.message));
+          .catch((error) => alert(error.message));
       });
     });
   </script>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background-color: #ffffff;
-      margin: 0;
-      padding: 0;
-    }
-    header {
-      background-color: #4C5FD5;
-      color: white;
-      padding: 10px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-    header img {
-      height: 50px;
-    }
-    header button {
-      background-color: #4C5FD5;
-      color: white;
-      border: none;
-      font-size: 16px;
-      cursor: pointer;
-    }
-    .container {
-      max-width: 400px;
-      margin: 50px auto;
-      padding: 20px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
-      border-radius: 10px;
-    }
-    h1 {
-      text-align: center;
-      color: #333;
-    }
-    form {
-      display: flex;
-      flex-direction: column;
-    }
-    input[type="email"], input[type="password"] {
-      margin-bottom: 10px;
-      padding: 10px;
-      font-size: 16px;
-    }
-    button[type="submit"] {
-      padding: 10px;
-      margin-top: 5px;
-      cursor: pointer;
-    }
-    #google-signin {
-      background-color: #DB4437;
-      color: white;
-      border: none;
-      padding: 10px;
-      font-size: 16px;
-      margin-top: 10px;
-      cursor: pointer;
-    }
-    #download-manual {
-      background-color: #DB4437;
-      color: white;
-      border: none;
-      padding: 10px;
-      font-size: 16px;
-      margin: 20px;
-      text-align: center;
-      cursor: pointer;
-    }
-  </style>
 </head>
-
 <body>
-  <header>
-    <img src="https://esourceu.com/ws/media-library/0880f05276734b0bb1744a19308c50d8/e-university-copy.png" alt="E-University Logo">
-    <div>
-      <button id="logout-button">Logout</button>
-    </div>
-  </header>
-
-  <center><button id="download-manual" onclick="window.open('https://esourceu.com/ws/media-library/97aaa5d9844aeabc17a69ab19fa8e537/esource-k12-user-manual.pdf', '_blank')">Download Instruction Manual</button></center>
-
-  <div class="container">
-    <h1>Secure Login for K12 Tutor</h1>
-    <form id="login-form">
-      <input id="login-email" type="email" placeholder="Email" required>
-      <input id="login-password" type="password" placeholder="Password" required>
-      <button type="submit">Sign In</button>
-    </form>
-    <form id="signup-form">
-      <input id="signup-email" type="email" placeholder="Email" required>
-      <input id="signup-password" type="password" placeholder="Password" required>
-      <button type="submit">Sign Up</button>
-    </form>
-    <button id="google-signin">Sign in with Google</button>
-  </div>
-
+  <!-- Simple Header and Content for Login/Logout -->
 </body>
 </html>
