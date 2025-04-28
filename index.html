@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ESource Academy: K12 Tutor Login</title>
+
+  <!-- Firebase SDKs -->
+  <script src="https://www.gstatic.com/firebasejs/10.10.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.10.0/firebase-auth.js"></script>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f9f9f9;
+      margin: 0;
+      padding: 0;
+    }
+    header {
+      background: #DB4437;
+      padding: 10px;
+      text-align: center;
+    }
+    header img {
+      width: 120px;
+      margin-bottom: 10px;
+    }
+    #manual-button {
+      background: #4C5FD5;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      font-size: 16px;
+      border-radius: 6px;
+      margin-top: 10px;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-block;
+    }
+    #firebase-login-overlay {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0,0,0,0.7);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 9999;
+    }
+    #firebase-login-box {
+      background: white;
+      padding: 20px;
+      width: 400px;
+      border-radius: 8px;
+      box-shadow: 0px 0px 10px #000;
+      text-align: center;
+    }
+    #firebase-login-box input {
+      width: 100%;
+      margin-bottom: 10px;
+      padding: 8px;
+    }
+    #firebase-login-box button {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 10px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      color: white;
+      font-size: 16px;
+    }
+    #signin-button { background-color: #4C5FD5; }
+    #signup-button { background-color: #6C63FF; }
+    #google-signin-button { background-color: #DB4437; }
+    #logout-button-container {
+      display: none;
+      position: fixed;
+      top: 10px;
+      right: 10px;
+      z-index: 10000;
+    }
+    #logout-button {
+      background: #FF5C5C;
+      padding: 8px 16px;
+      border: none;
+      border-radius: 4px;
+      color: white;
+      cursor: pointer;
+    }
+    main {
+      padding: 20px;
+      text-align: center;
+    }
+    iframe {
+      width: 90%;
+      height: 525px;
+      border: none;
+      border-radius: 8px;
+      box-shadow: 0px 0px 8px rgba(0,0,0,0.1);
+      margin-top: 20px;
+    }
+    footer {
+      background: #eee;
+      padding: 20px;
+      font-size: 14px;
+      text-align: center;
+      margin-top: 40px;
+    }
+  </style>
+</head>
+
+<body>
+
+<header>
+  <img src="https://esourceu.com/ws/media-library/0880f05276734b0bb1744a19308c50d8/e-university-copy.png" alt="E University Logo">
+  <br>
+  <a id="manual-button" href="https://esourceu.com/ws/media-library/97aaa5d9844aeabc17a69ab19fa8e537/esource-k12-user-manual.pdf" target="_blank">Download Instruction Manual</a>
+</header>
+
+<!-- Login Overlay -->
+<div id="firebase-login-overlay">
+  <div id="firebase-login-box">
+    <h2>Secure Login for K12 Tutor</h2>
+    <input type="email" id="email" placeholder="Email">
+    <input type="password" id="password" placeholder="Password">
+    <button id="signin-button">Sign In</button>
+    <button id="signup-button">Sign Up</button>
+    <button id="google-signin-button">Sign in with Google</button>
+  </div>
+</div>
+
+<!-- Logout Button -->
+<div id="logout-button-container">
+  <button id="logout-button">Logout</button>
+</div>
+
+<!-- Main Content Area -->
+<main>
+  <iframe src="https://app.fastbots.ai/embed/cm4k4cbes0ugls5bm41o8i8lo"></iframe>
+</main>
+
+<footer>
+  <p>Corporate Headquarters: 2675 Mall of Georgia Blvd., Suite 601 - Buford, GA 30519<br>
+     Phone: (973) 829-0010<br>
+     Email: <a href="mailto:services@esourcecorp.com">services@esourcecorp.com</a>
+  </p>
+</footer>
+
+<script>
+  const firebaseConfig = {
+    apiKey: "AIzaSyAyxcMMkmb6e3XjNZvySwjkdwHeEMaLfOE",
+    authDomain: "k12-tutor---esource-university.firebaseapp.com",
+    projectId: "k12-tutor---esource-university",
+    storageBucket: "k12-tutor---esource-university.firebasestorage.app",
+    messagingSenderId: "936098060297",
+    appId: "1:936098060297:web:0a69cc4cb7e39b1db200d8"
+  };
+
+  firebase.initializeApp(firebaseConfig);
+  const auth = firebase.auth();
+
+  document.addEventListener('DOMContentLoaded', function() {
+    document.getElementById('signin-button').addEventListener('click', signin);
+    document.getElementById('signup-button').addEventListener('click', signup);
+    document.getElementById('google-signin-button').addEventListener('click', googleSignin);
+    document.getElementById('logout-button').addEventListener('click', logout);
+
+    auth.onAuthStateChanged(function(user) {
+      if (user) {
+        hideLoginOverlay();
+      } else {
+        document.getElementById('firebase-login-overlay').style.display = 'flex';
+        document.getElementById('logout-button-container').style.display = 'none';
+      }
+    });
+  });
+
+  function signup() {
+    const email = document.getElementById('email').value;
+    const password = document.getElementById('password').value;
+    auth.createUserWithEmailAndPassword(email, password)
+      .then(() => {
+        alert('Sign-up successful! Please verify your email.');
+        hideLoginOverlay();
+      })
+      .catch(error => {
+        alert('Error signing up: ' + error.message);
+      });
+  }
+
+  function signin() {
+    const email = document.getElementById('email').value;
+    const password = document.getElementById('password').value;
+    auth.signInWithEmailAndPassword(email, password)
+      .then(() => {
+        alert('Signed in successfully!');
+        hideLoginOverlay();
+      })
+      .catch(error => {
+        alert('Error signing in: ' + error.message);
+      });
+  }
+
+  function googleSignin() {
+    const provider = new firebase.auth.GoogleAuthProvider();
+    auth.signInWithPopup(provider)
+      .then(() => {
+        alert('Google Sign-In successful!');
+        hideLoginOverlay();
+      })
+      .catch(error => {
+        alert('Google Sign-In error: ' + error.message);
+      });
+  }
+
+  function hideLoginOverlay() {
+    document.getElementById('firebase-login-overlay').style.display = 'none';
+    document.getElementById('logout-button-container').style.display = 'block';
+  }
+
+  function logout() {
+    auth.signOut().then(() => {
+      alert('Logged out successfully.');
+      document.getElementById('firebase-login-overlay').style.display = 'flex';
+      document.getElementById('logout-button-container').style.display = 'none';
+    }).catch(error => {
+      console.error('Logout error:', error);
+    });
+  }
+</script>
+
+</body>
+</html>
